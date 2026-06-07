@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from:    `${process.env.RESEND_FROM_NAME} <${process.env.RESEND_FROM_EMAIL}>`,
       to:      'priyankpateliya2004@gmail.com',
-      replyTo: email,
+      reply_to: email,
       subject: `New message from ${name || email} — Depths of Deliberation`,
       html: `<p><strong>From:</strong> ${name || 'Anonymous'} &lt;${email}&gt;</p>
              <p><strong>Message:</strong></p><p>${message.replace(/\n/g, '<br>')}</p>`,
