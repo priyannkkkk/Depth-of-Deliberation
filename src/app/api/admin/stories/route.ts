@@ -6,7 +6,7 @@ import type { StoryFormData } from '@/types'
 
 // GET /api/admin/stories — list all stories
 export async function GET() {
-  const supabase = createServerSupabase()
+  const supabase = await createServerSupabase()
   const { data: { session } } = await supabase.auth.getSession()
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -27,7 +27,7 @@ export async function GET() {
 
 // POST /api/admin/stories — create story
 export async function POST(req: NextRequest) {
-  const supabase = createServerSupabase()
+  const supabase = await createServerSupabase()
   const { data: { session } } = await supabase.auth.getSession()
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 

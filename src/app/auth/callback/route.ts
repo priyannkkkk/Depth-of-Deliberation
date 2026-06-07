@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   const next = searchParams.get('next') ?? '/'
 
   if (code) {
-    const supabase = createServerSupabase()
+    const supabase = await createServerSupabase()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`)

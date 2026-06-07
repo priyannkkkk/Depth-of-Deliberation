@@ -1,0 +1,4 @@
+[33md3d7c96[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Fix middleware typing for Vercel
+[33md046018[m Fix middleware cookie typing
+[33m2072b89[m Added Go Home chapter and homepage improvements
+[33m46786fa[m working version with old cinematic UI restored

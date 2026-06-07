@@ -5,7 +5,7 @@ import { AdminNav }   from '@/components/admin/AdminNav'
 import { AdminSidebar } from '@/components/admin/AdminSidebar'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const supabase = createServerSupabase()
+  const supabase = await createServerSupabase()
   const { data: { session } } = await supabase.auth.getSession()
 
   if (!session) redirect('/auth?next=/admin')

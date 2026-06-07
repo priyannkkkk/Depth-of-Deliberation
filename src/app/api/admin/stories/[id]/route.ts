@@ -1,13 +1,22 @@
 // src/app/api/admin/stories/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server'
+import type { SupabaseClient } from '@supabase/supabase-js'
 import { createServerSupabase, createAdminSupabase } from '@/lib/supabase'
 import { getReadingTime } from '@/lib/utils'
 
-async function requireAdmin(supabase: ReturnType<typeof createServerSupabase>) {
-  const { data: { session } } = await supabase.auth.getSession()
+async function requireAdmin(supabase: SupabaseClient) {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
   if (!session) return null
+
   const { data: profile } = await supabase
-    .from('profiles').select('is_admin').eq('id', session.user.id).single()
+    .from('profiles')
+    .select('is_admin')
+    .eq('id', session.user.id)
+    .single()
+
   return profile?.is_admin ? session : null
 }
 
@@ -16,18 +25,28 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const supabase = createServerSupabase()
-  const session  = await requireAdmin(supabase)
-  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+  const supabase = await createServerSupabase()
+  const session = await requireAdmin(supabase)
+
+  if (!session) {
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 403 }
+    )
+  }
 
   const body = await req.json()
   const admin = createAdminSupabase()
 
-  // If publishing for the first time, set published_at
   let updates = { ...body }
+
   if (body.status === 'published') {
     const { data: existing } = await admin
-      .from('stories').select('published_at').eq('id', params.id).single()
+      .from('stories')
+      .select('published_at')
+      .eq('id', params.id)
+      .single()
+
     if (!existing?.published_at) {
       updates.published_at = new Date().toISOString()
     }
@@ -44,7 +63,13 @@ export async function PATCH(
     .select()
     .single()
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) {
+    return NextResponse.json(
+      { error: error.message },
+      { status: 500 }
+    )
+  }
+
   return NextResponse.json(data)
 }
 
@@ -53,13 +78,29 @@ export async function DELETE(
   _req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const supabase = createServerSupabase()
-  const session  = await requireAdmin(supabase)
-  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+  const supabase = await createServerSupabase()
+  const session = await requireAdmin(supabase)
+
+  if (!session) {
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 403 }
+    )
+  }
 
   const admin = createAdminSupabase()
-  const { error } = await admin.from('stories').delete().eq('id', params.id)
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  const { error } = await admin
+    .from('stories')
+    .delete()
+    .eq('id', params.id)
+
+  if (error) {
+    return NextResponse.json(
+      { error: error.message },
+      { status: 500 }
+    )
+  }
+
   return new NextResponse(null, { status: 204 })
 }
