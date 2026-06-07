@@ -23,6 +23,7 @@ export interface Story {
   slug: string
   title: string
   lesson: string | null
+  reflection?: string
   body_html: string
   excerpt: string | null
   cover_url: string | null

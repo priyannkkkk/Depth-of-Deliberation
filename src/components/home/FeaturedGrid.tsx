@@ -151,10 +151,10 @@ function FeaturedCard({
                          text-[var(--gold)] opacity-[0.05]
                          transition-opacity duration-500
                          group-hover:opacity-[0.08]"
-              style={{ fontSize: isLarge ? '20rem' : '12rem' }}
+              style={{ fontSize: isLarge ? '8rem' : '5rem' }}
               aria-hidden="true"
             >
-              {story.id.slice(0, 2)}
+              DOD
             </span>
           </div>
         )}
@@ -185,7 +185,7 @@ function FeaturedCard({
 
           {/* Story number */}
           <span className="block font-serif text-[0.78rem] text-[var(--gold-dim)] mb-1">
-            Story {String(story.id).padStart(2, '0')}
+            DOD
           </span>
 
           {/* Title */}

@@ -139,7 +139,6 @@ function StoryCard({ story }: { story: Story }) {
                      transition-colors duration-300 group-hover:text-[var(--gold-faint)]"
           aria-hidden="true"
         >
-          {String(story.id).padStart(2, '0')}
         </span>
 
         {/* Tags */}

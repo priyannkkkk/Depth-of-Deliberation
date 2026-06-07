@@ -240,7 +240,7 @@ export function StoryReader({
               Reflection
             </p>
             <p className="font-serif italic text-[var(--ink-secondary)] text-[1.08rem] leading-[1.95]">
-              {story.lesson}
+              {story.reflection}
             </p>
           </div>
 
