@@ -59,7 +59,7 @@ export function Nav() {
         ].map((link) => (
           <li key={link.href}>
             <Link
-              href={link.href}
+              href={link.href as any}
               className="text-[0.72rem] tracking-[0.14em] uppercase
                          text-[var(--ink-secondary)] hover:text-gold
                          transition-colors duration-300"
@@ -83,7 +83,7 @@ export function Nav() {
         {user ? (
           <>
             <Link
-              href="/bookmarks"
+              href={"/bookmarks" as any}
               aria-label="My bookmarks"
               className="text-[var(--ink-muted)] hover:text-gold transition-colors p-1"
             >
@@ -131,7 +131,7 @@ export function Nav() {
                     </div>
                     {user.is_admin && (
                       <Link
-                        href="/admin"
+                        href={"/admin" as any}
                         onClick={() => setUserMenuOpen(false)}
                         className="flex items-center gap-2 px-4 py-2.5
                                    text-[0.75rem] text-[var(--ink-secondary)]
@@ -142,7 +142,7 @@ export function Nav() {
                       </Link>
                     )}
                     <Link
-                      href="/bookmarks"
+                      href={"/bookmarks" as any}
                       onClick={() => setUserMenuOpen(false)}
                       className="flex items-center gap-2 px-4 py-2.5
                                  text-[0.75rem] text-[var(--ink-secondary)]
@@ -167,7 +167,7 @@ export function Nav() {
           </>
         ) : (
           <Link
-            href="/auth"
+            href={"/auth" as any}
             className="flex items-center gap-1.5 text-[0.72rem] tracking-[0.1em] uppercase
                        text-[var(--ink-secondary)] hover:text-gold transition-colors"
           >
@@ -206,7 +206,7 @@ export function Nav() {
               ].map((link) => (
                 <Link
                   key={link.href}
-                  href={link.href}
+                  href={link.href as any}
                   onClick={() => setMenuOpen(false)}
                   className="px-8 py-3.5 text-[0.78rem] tracking-[0.12em] uppercase
                              text-[var(--ink-secondary)] hover:text-gold
