@@ -1,6 +1,6 @@
 'use client'
 // src/app/auth/page.tsx
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Mail, Chrome, ArrowLeft } from 'lucide-react'
@@ -9,7 +9,7 @@ import { createBrowserSupabase } from '@/lib/supabase'
 
 type AuthMode = 'signin' | 'signup' | 'magic'
 
-export default function AuthPage() {
+function AuthPageContent() {
   const router       = useRouter()
   const searchParams = useSearchParams()
   const next         = searchParams.get('next') ?? '/'
@@ -254,5 +254,12 @@ export default function AuthPage() {
         </p>
       </div>
     </div>
+  )
+}
+export default function AuthPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen" />}>
+      <AuthPageContent />
+    </Suspense>
   )
 }
