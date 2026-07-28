@@ -114,6 +114,18 @@ export interface ReadingProgress {
   story_id: string
   progress_pct: number
   completed: boolean
+  last_read_at: string
+  updated_at: string
+
+  // joined
+  story?: Story
+}
+
+export interface NotificationPreferences {
+  user_id: string
+  new_story_email: boolean
+  newsletter: boolean
+  created_at: string
   updated_at: string
 }
 
@@ -166,6 +178,17 @@ export interface CommentFormData {
 export interface SubscribeFormData {
   email: string
   name?: string
+}
+
+export interface ProfileFormData {
+  display_name: string
+  bio: string
+  avatar_url?: string | null
+}
+
+export interface NotificationPreferencesFormData {
+  new_story_email: boolean
+  newsletter: boolean
 }
 
 // ── UI state types ───────────────────────────────

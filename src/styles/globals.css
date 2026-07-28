@@ -749,6 +749,55 @@ footer {
 .reveal.visible { opacity:1; transform:translateY(0); }
 
 /* ════════════════════════════════════
+   SHARED UI PRIMITIVES
+   (used by the React/Tailwind components)
+   ════════════════════════════════════ */
+
+.site-width {
+  max-width: var(--max-w);
+}
+
+.reading-width {
+  max-width: var(--reading-w);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.65rem;
+  background: var(--gold-faint);
+  color: var(--gold-dim);
+  border: 0.5px solid rgba(196, 163, 90, 0.2);
+  white-space: nowrap;
+}
+
+.input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 0.5px solid var(--border);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  padding: 0.9rem 1.2rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+.input:focus {
+  border-color: var(--gold-dim);
+}
+
+.input:disabled {
+  cursor: not-allowed;
+}
+/* ════════════════════════════════════
    RESPONSIVE — Desktop optimized
    ════════════════════════════════════ */
 @media (max-width: 1100px) {

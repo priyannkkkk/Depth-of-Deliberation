@@ -4,8 +4,15 @@
 // ═══════════════════════════════════════════════
 import { createServerSupabase, createBrowserSupabase, createAdminSupabase } from '@/lib/supabase'
 import type {
-  Comment, CommentFormData, Reaction, ReactionType,
-  Bookmark, ReadingProgress, ReactionCount
+  Comment,
+  CommentFormData,
+  Reaction,
+  ReactionType,
+  Bookmark,
+  ReadingProgress,
+  ReactionCount,
+  NotificationPreferences,
+  NotificationPreferencesFormData,
 } from '@/types'
 
 // ════════════════════════════════════
@@ -267,6 +274,20 @@ export async function toggleBookmark(
   }
 }
 
+export async function removeBookmark(
+  storyId: string,
+  userId: string
+): Promise<void> {
+  const supabase = createBrowserSupabase()
+
+  const { error } = await supabase
+    .from('bookmarks')
+    .delete()
+    .eq('story_id', storyId)
+    .eq('user_id', userId)
+
+  if (error) throw error
+}
 // ════════════════════════════════════
 // READING PROGRESS
 // ════════════════════════════════════
@@ -277,15 +298,24 @@ export async function saveReadingProgress(
   progressPct: number
 ): Promise<void> {
   const supabase = createBrowserSupabase()
+
+  const now = new Date().toISOString()
+
   await supabase
     .from('reading_progress')
-    .upsert({
-      user_id:      userId,
-      story_id:     storyId,
-      progress_pct: progressPct,
-      completed:    progressPct >= 95,
-      updated_at:   new Date().toISOString(),
-    }, { onConflict: 'user_id, story_id' })
+    .upsert(
+      {
+        user_id: userId,
+        story_id: storyId,
+        progress_pct: progressPct,
+        completed: progressPct >= 95,
+        last_read_at: now,
+        updated_at: now,
+      },
+      {
+        onConflict: 'user_id, story_id',
+      }
+    )
 }
 
 export async function getReadingProgress(
@@ -303,6 +333,35 @@ export async function getReadingProgress(
   return data as ReadingProgress | null
 }
 
+export async function getContinueReading(
+  userId: string
+): Promise<ReadingProgress[]> {
+  const supabase = await createServerSupabase()
+
+  const { data, error } = await supabase
+    .from('reading_progress')
+    .select(`
+      *,
+      story:stories(
+        id,
+        slug,
+        title,
+        excerpt,
+        tags,
+        read_time,
+        cover_url,
+        accent_color
+      )
+    `)
+    .eq('user_id', userId)
+    .eq('completed', false)
+    .gt('progress_pct', 0)
+    .order('last_read_at', { ascending: false })
+
+  if (error) throw error
+
+  return (data as ReadingProgress[]) ?? []
+}
 // ════════════════════════════════════
 // SUBSCRIBERS
 // ════════════════════════════════════
@@ -329,6 +388,39 @@ export async function subscribe(email: string, name?: string): Promise<void> {
   })
 }
 
+export async function getNotificationPreferences(
+  userId: string
+): Promise<NotificationPreferences | null> {
+  const supabase = await createServerSupabase()
+
+  const { data } = await supabase
+    .from('notification_preferences')
+    .select('*')
+    .eq('user_id', userId)
+    .single()
+
+  return data as NotificationPreferences | null
+}
+
+export async function updateNotificationPreferences(
+  userId: string,
+  prefs: NotificationPreferencesFormData
+): Promise<void> {
+  const supabase = createBrowserSupabase()
+
+  const { error } = await supabase
+    .from('notification_preferences')
+    .upsert(
+      {
+        user_id: userId,
+        ...prefs,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'user_id' }
+    )
+
+  if (error) throw error
+}
 // ════════════════════════════════════
 // ANALYTICS
 // ════════════════════════════════════
