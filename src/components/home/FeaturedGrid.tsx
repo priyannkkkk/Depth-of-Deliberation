@@ -169,64 +169,31 @@ function FeaturedCard({
           aria-hidden="true"
         />
 
-        {/* Content */}
+       {/* Content */}
         <div
           className={cn(
             'absolute bottom-0 left-0 right-0 z-[2]',
             isLarge ? 'p-8 md:p-10' : 'p-6 md:p-8'
           )}
         >
-          {/* Tags */}
-          <div className="flex flex-wrap gap-1.5 mb-3">
-            {story.tags.slice(0, 3).map((tag) => (
-              <span key={tag} className="tag">{tag}</span>
-            ))}
-          </div>
-
-          {/* Story number */}
-          <span className="block font-serif text-[0.78rem] text-[var(--gold-dim)] mb-1">
-            DOD
-          </span>
-
           {/* Title */}
           <h3
             className={cn(
-              'font-serif font-light text-cream leading-[1.2] mb-2',
-              isLarge ? 'text-3xl md:text-4xl' : 'text-xl md:text-2xl'
+              'font-serif font-light text-cream leading-[1.15] mb-6',
+              isLarge
+                ? 'text-5xl md:text-6xl'
+                : 'text-3xl md:text-4xl'
             )}
           >
             {story.title}
           </h3>
-
-          {/* Lesson */}
-          {story.lesson && (
-            <p className="text-[0.68rem] tracking-[0.08em] uppercase text-gold opacity-80 mb-3">
-              {story.lesson}
-            </p>
-          )}
-
-          {/* Preview */}
-          <p
-            className={cn(
-              'font-serif italic text-[var(--cream-dim)] leading-[1.75] mb-0',
-              isLarge ? 'text-base line-clamp-3' : 'text-sm line-clamp-2'
-            )}
-          >
-            {story.excerpt}
-          </p>
-
+        
           {/* Footer */}
-          <div
-            className="flex items-center justify-between mt-5
-                       border-t border-[rgba(196,163,90,0.15)] pt-4"
-          >
-            <span className="text-[0.66rem] text-[var(--ink-muted)]">
-              ⏳ {story.read_time} min read
-            </span>
+          <div className="flex justify-end">
             <span
-              className="text-[0.66rem] tracking-[0.14em] uppercase text-gold
-                         flex items-center gap-1.5
-                         transition-[gap] duration-300
+              className="text-[0.72rem] tracking-[0.14em] uppercase text-gold
+                         flex items-center gap-2
+                         transition-all duration-300
                          group-hover:gap-3"
             >
               Read Story →
