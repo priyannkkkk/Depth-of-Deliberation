@@ -132,7 +132,7 @@ export async function getRelatedStories(
     .eq('status', 'published')
     .neq('id', storyId)
     .overlaps('tags', tags)
-    .limit(3)
+    // .limit(3)
 
   return (data as Story[]) ?? []
 }
