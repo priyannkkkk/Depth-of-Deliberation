@@ -45,7 +45,7 @@ export async function getStories(opts: {
   }
 }
 
-// ── Fetch featured stories ordered by featured_order ──
+// ── Fetch ALL featured stories ordered by featured_order ──
 export async function getFeaturedStories(): Promise<Story[]> {
   const supabase = await createServerSupabase()
 
@@ -57,7 +57,6 @@ export async function getFeaturedStories(): Promise<Story[]> {
     .eq('status', 'published')
     .eq('featured', true)
     .order('featured_order', { ascending: true })
-    // .limit(3)
 
   if (error) throw error
 
@@ -132,7 +131,7 @@ export async function getRelatedStories(
     .eq('status', 'published')
     .neq('id', storyId)
     .overlaps('tags', tags)
-    .limit(3)
+    // .limit(3)
 
   return (data as Story[]) ?? []
 }
